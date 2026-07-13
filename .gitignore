@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+models/**/*.h5
+models/**/*.pkl
+logs/*.log
