@@ -15,6 +15,7 @@ from equity_compass.config import (
     VAL_RATIO,
 )
 from equity_compass.database import delete_ticker_rows
+from equity_compass.preprocessing.corporate_actions import apply_subdivision_adjustments
 
 
 def extract_data(engine: Engine, ticker: str) -> dict[str, pd.DataFrame]:
@@ -62,6 +63,8 @@ def extract_data(engine: Engine, ticker: str) -> dict[str, pd.DataFrame]:
         params={"ticker": ticker},
         parse_dates=["report_date"],
     )
+
+    prices, fundamentals = apply_subdivision_adjustments(ticker, prices, fundamentals)
 
     return {
         "prices": prices,

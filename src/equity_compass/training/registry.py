@@ -150,15 +150,19 @@ def evaluate_and_save(
     *,
     eval_split: str = "test",
     replace: bool = True,
+    notes: str | None = None,
 ) -> dict:
     eval_df = predictions_df[predictions_df["split_flag"] == eval_split]
     y_true = eval_df["target_close_30d"].astype(float).values
     y_pred = eval_df["predicted_price"].astype(float).values
     metrics = compute_metrics(y_true, y_pred)
 
+    if notes is None:
+        notes = f"Evaluated on {eval_split} split ({len(eval_df)} rows)"
+
     save_run(
         engine, ticker, model_type, predictions_df, ranges, metrics,
-        notes=f"Evaluated on {eval_split} split ({len(eval_df)} rows)",
+        notes=notes,
         replace=replace,
     )
     return metrics

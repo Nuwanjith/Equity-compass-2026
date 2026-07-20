@@ -58,9 +58,12 @@ def get_history_closes(df: pd.DataFrame, row: pd.Series) -> pd.Series:
     return df.loc[mask, "close_price"].astype(float)
 
 
-def get_history_exog(df: pd.DataFrame, row: pd.Series) -> pd.DataFrame:
+def get_history_exog(
+    df: pd.DataFrame, row: pd.Series, columns: list[str] | None = None
+) -> pd.DataFrame:
+    cols = columns or EXOG_FEATURES
     allowed = {"train"} if row["split_flag"] == "val" else {"train", "val"}
     mask = (df["feature_date"] <= row["feature_date"]) & (
         df["split_flag"].isin(allowed)
     )
-    return df.loc[mask, EXOG_FEATURES].astype(float)
+    return df.loc[mask, cols].astype(float)

@@ -10,3 +10,5 @@ venv/
 models/**/*.h5
 models/**/*.pkl
 logs/*.log
+reports/
+.mplconfig/

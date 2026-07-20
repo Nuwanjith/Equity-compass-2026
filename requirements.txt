@@ -6,3 +6,5 @@ SQLAlchemy>=2.0.0
 python-dotenv>=1.0.0
 statsmodels>=0.14.0
 xgboost>=2.0.0
+tensorflow>=2.15.0
+matplotlib>=3.7.0

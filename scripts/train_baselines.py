@@ -58,6 +58,9 @@ def main() -> None:
         try:
             predict_fn = BASELINE_MODELS[model_type]
             predictions_df = predict_fn(df)
+            tuning_notes = predictions_df.attrs.get("tuning_notes")
+            base_note = f"Evaluated on {args.eval_split} split"
+            notes = f"{base_note}; {tuning_notes}" if tuning_notes else base_note
             metrics = evaluate_and_save(
                 engine,
                 ticker,
@@ -65,10 +68,13 @@ def main() -> None:
                 predictions_df,
                 ranges,
                 eval_split=args.eval_split,
+                notes=notes,
             )
             results.append((model_type, metrics))
+            if tuning_notes:
+                print(f"\n    {tuning_notes}")
             print(
-                f"MAE={metrics['mae']:.4f}  RMSE={metrics['rmse']:.4f}  "
+                f"    MAE={metrics['mae']:.4f}  RMSE={metrics['rmse']:.4f}  "
                 f"MAPE={metrics['mape']:.2f}%  R2={metrics['r2']:.4f}"
             )
         except Exception as exc:
