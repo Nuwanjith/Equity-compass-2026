@@ -32,6 +32,10 @@ def _allowed_window_splits(end_split: str) -> set[str]:
         return {"train", "val"}
     if end_split == "test":
         return {"train", "val", "test"}
+    if end_split == "future":
+        # Out-of-sample inference: a future window may look back over any
+        # realised history plus earlier future rows (all strictly <= today).
+        return {"train", "val", "test", "future"}
     return set()
 
 
